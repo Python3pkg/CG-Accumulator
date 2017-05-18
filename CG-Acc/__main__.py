@@ -63,7 +63,7 @@ Developed by : Avikalp Srivastava
 
 
 # Usage : Exception Handling
-from __future__ import with_statement
+
 # Usage : Sort dictionary based on keys / values
 import operator
 # Usage : open a link in user's default web browser.
@@ -108,9 +108,9 @@ def check_for_update(content):
                 for nline in content:
                     mobj = re.match(r'<p>UPDATE INFO : (.*)</p>', nline, re.M|re.I)
                     if mobj:
-                        print '\a'
-                        print "A new version of the software is available. Use 'pip install --upgrade CG-Acc' command to get the latest version."
-                        print "Update Info : " + str(mobj.group(1))
+                        print('\a')
+                        print("A new version of the software is available. Use 'pip install --upgrade CG-Acc' command to get the latest version.")
+                        print("Update Info : " + str(mobj.group(1)))
                         time.sleep(1)
                         break
             break
@@ -161,20 +161,20 @@ def connect(fname, url_to_scrape):
 	connect.counter += 1
         if connect.counter >= 4:
             connect.counter = 0
-            print '\a'
-            print '\nYou don\'t seem to be having internet connectivity | Connection with ERP performance page cannot be established.'
-            reconnect_choice = raw_input('Enter r to try again, x to exit :  ')
+            print('\a')
+            print('\nYou don\'t seem to be having internet connectivity | Connection with ERP performance page cannot be established.')
+            reconnect_choice = input('Enter r to try again, x to exit :  ')
             while reconnect_choice not in ['r', 'x']:
-                reconnect_choice = raw_input('Invalid choice! Please enter r to try reconnecting again, or enter x to exit :  ')
+                reconnect_choice = input('Invalid choice! Please enter r to try reconnecting again, or enter x to exit :  ')
             if reconnect_choice == 'r':
-                print 'Retrying....'
+                print('Retrying....')
                 return connect(fname, url_to_scrape)
             else:
-                print "\nExiting...."
+                print("\nExiting....")
                 exit(0)
         else:
             if connect.counter == 1:
-                print 'Experiencing slow internet connectivity...'
+                print('Experiencing slow internet connectivity...')
             # print 'Connection Error'
             # print 'Retrying....'
             return connect(fname, url_to_scrape)
@@ -233,12 +233,12 @@ def check_roll_num_validity(user_roll_num):
 def take_roll_num():
     """ Take a roll number input from user until it is valid, then return it. Return type : str"""
     # Taking roll_num input
-    roll_num = raw_input("Enter Roll Number :  ")
+    roll_num = input("Enter Roll Number :  ")
     # Converting user inp to upper (14cs10008 - 14CS10008) and checking validity
     while True:
         flag, content = check_roll_num_validity(roll_num.upper())
         if not flag:
-            roll_num = raw_input("Roll Number Invalid / Not currently supported. Please enter valid Roll Number :  ")
+            roll_num = input("Roll Number Invalid / Not currently supported. Please enter valid Roll Number :  ")
         else:
             break
     return [roll_num.upper(), content]
@@ -249,9 +249,9 @@ def take_year():
     # Currently, software supports students with starting years as 2012, 2013, 2014, 2015
     # UPDATE : Annual
     years = ["11","12", "13", "14", "15"]
-    year = raw_input("Enter start year for the batch (Choices : 11, 12, 13, 14, 15) :  ")
+    year = input("Enter start year for the batch (Choices : 11, 12, 13, 14, 15) :  ")
     while year not in years:
-        year = raw_input("Please enter valid year :  ")
+        year = input("Please enter valid year :  ")
     return year
 
 
@@ -259,22 +259,22 @@ def take_dep():
     """ Take user input for department, validate and return department. Return type : str"""
     # List storing available departments in IIT Kharagpur.
     departments = ["AE", "AG", "AR", "BT", "CE", "CH", "CS", "CY", "EC", "EE", "EX", "GG", "HS", "IE", "IM", "MA", "ME", "MF", "MI", "MT", "NA", "PH", "QD"]
-    dep = raw_input("Enter Department (e.g \"CE\" for civil) :  ")
+    dep = input("Enter Department (e.g \"CE\" for civil) :  ")
     # Converting user entered input to uppercase, in case it isn't.
     dep = dep.upper()
     while dep not in departments:
-        print "Please enter a valid department!"
-        dep = raw_input("Enter Valid Department again : ")
+        print("Please enter a valid department!")
+        dep = input("Enter Valid Department again : ")
         dep = dep.upper()
     return dep
 
 def take_degree():
     """ Take user input for choice of degree during dept rank evaluation. Return type : int"""  
     choices = ['1','2','3']
-    degree_choice = raw_input("Select choice for degree 1) Among B.Tech   2) Among Dual     3) Both :  ")
+    degree_choice = input("Select choice for degree 1) Among B.Tech   2) Among Dual     3) Both :  ")
     while degree_choice not in choices:
-        print "Please enter valid choice!"
-        degree_choice = raw_input("Please enter valid choice for degree again:  ")
+        print("Please enter valid choice!")
+        degree_choice = input("Please enter valid choice for degree again:  ")
     return int(degree_choice)
 
 def take_sem_num():
@@ -282,9 +282,9 @@ def take_sem_num():
     # Right now, software only supports semester 1 to 8
     # EXTEND : Make Semester Physics and Chemistry instead of 1 and 2
     # EXTEND : Introduce semesters 9 and 10
-    sem_num = raw_input("Enter Semester Number [3-8] :  ")
+    sem_num = input("Enter Semester Number [3-8] :  ")
     while not is_int(sem_num) or int(sem_num) < 3 or int(sem_num) > 8:
-        sem_num = raw_input("Please enter valid Semester Number :  ")
+        sem_num = input("Please enter valid Semester Number :  ")
     return int(sem_num)
 
 
@@ -393,8 +393,8 @@ def find_cg_batch(year, dep, msc_dep_bool):
             student_count += 1
             cg_total += cg
             name = find_name(rollno, content)
-            print 'Processing', 
-            print rollno, name
+            print('Processing', end=' ') 
+            print(rollno, name)
             table.add_row([rollno, name, cg])
         # If the subject is not Msc, then we make a transition to dual degree students
         if bad_count >= 5 and not msc_dep_bool and roll_count < 30000:
@@ -404,12 +404,12 @@ def find_cg_batch(year, dep, msc_dep_bool):
         # Conditions for ending, self explanatory.
         elif bad_count >= 5 and ((not msc_dep_bool and roll_count > 30000) or msc_dep_bool):
             break
-    print '\nCGPA list for batch : ' + str(year) + '-' + dep
-    print table
-    print '\nTotal students = ' + str(student_count)
-    print 'Average CGPA =  ',
-    print  str(cg_total/float(student_count)) if student_count > 0 else '-'
-    print ''
+    print('\nCGPA list for batch : ' + str(year) + '-' + dep)
+    print(table)
+    print('\nTotal students = ' + str(student_count))
+    print('Average CGPA =  ', end=' ')
+    print(str(cg_total/float(student_count)) if student_count > 0 else '-')
+    print('')
 
 
 def find_sg_list_individual(user_roll_num, content = ''):
@@ -470,8 +470,8 @@ def find_recent_sg_or_sg_list_batch(year, dep, msc_dep_bool, choice = '0'):
                 sg = find_recent_sg_individual(rollno, content)
                 sg_total += sg
             name = find_name(rollno, content)
-            print 'Processing', 
-            print rollno, name
+            print('Processing', end=' ') 
+            print(rollno, name)
             if (choice == '0' and len(sg_list) != 0) or (choice == '1' and sg != -1):
                 if choice == '0':
                     table.add_row([rollno, name, str(sg_list)])
@@ -485,15 +485,15 @@ def find_recent_sg_or_sg_list_batch(year, dep, msc_dep_bool, choice = '0'):
         elif bad_count >= 5 and ((not msc_dep_bool and roll_count > 30000) or msc_dep_bool):
             break
     if choice == '0':
-        print '\nSGPA list for batch ' + year + '-' + dep + ' : '
+        print('\nSGPA list for batch ' + year + '-' + dep + ' : ')
     elif choice == '1':
-        print '\nRecent SGPA list for batch ' + year + '-' + dep + ' : '
-    print table
-    print '\nTotal students = ' + str(student_count)
+        print('\nRecent SGPA list for batch ' + year + '-' + dep + ' : ')
+    print(table)
+    print('\nTotal students = ' + str(student_count))
     if choice == '1':
-        print 'Average SG this recent semester for the batch ' + year + '-' + dep + ' : ',
-        print str(sg_total/float(student_count)) if student_count > 0 else '-'
-    print ''
+        print('Average SG this recent semester for the batch ' + year + '-' + dep + ' : ', end=' ')
+        print(str(sg_total/float(student_count)) if student_count > 0 else '-')
+    print('')
 
 
 def find_recent_sg_individual(user_roll_num, content = ''):
@@ -559,8 +559,8 @@ def find_dep_rank_individual(roll_num, choice = '1', content = ''):
         if len(content) < 50:
             bad_count += 1
         else:
-            print 'Processing', 
-            print rollno
+            print('Processing', end=' ') 
+            print(rollno)
             bad_count = 0
             student_count += 1
             if choice == '1':
@@ -611,8 +611,8 @@ def find_dep_rank_list_CG(year, dep, msc_dep_bool, degree_choice = 3):
             bad_count = 0
             student_count += 1
             name = find_name(rollno, content)
-            print 'Processing', 
-            print rollno, name
+            print('Processing', end=' ') 
+            print(rollno, name)
             # Handling duplicate names. Will label more than 2 dups in same fashion 
             try:
                 dep_dict[name]
@@ -627,10 +627,10 @@ def find_dep_rank_list_CG(year, dep, msc_dep_bool, degree_choice = 3):
                 roll_count = 31000
     # Sorting names in dict acc to CG in descending order.
     # TODO : analyze if this is stable or not. If not, modify it as stable sort
-    sorted_dep_dict = sorted(dep_dict.items(), key=operator.itemgetter(1), reverse=True)
+    sorted_dep_dict = sorted(list(dep_dict.items()), key=operator.itemgetter(1), reverse=True)
     index = 0
     prev_rank = 1
-    print '\nDepartment Rank list for the batch ' + year + '-' + dep + ' based on CGPA : '
+    print('\nDepartment Rank list for the batch ' + year + '-' + dep + ' based on CGPA : ')
     table = PrettyTable(['Rank', 'Name', 'CGPA'])
     for item in sorted_dep_dict:
         if index != 0 and sorted_dep_dict[index][1] == sorted_dep_dict[index - 1][1]:
@@ -639,8 +639,8 @@ def find_dep_rank_list_CG(year, dep, msc_dep_bool, degree_choice = 3):
             table.add_row([index + 1, item[0], item[1]])
             prev_rank = index + 1
         index += 1
-    print table
-    print ''
+    print(table)
+    print('')
 
 
 def find_dep_rank_list_SG(year, dep, msc_dep_bool, degree_choice = 3):
@@ -673,8 +673,8 @@ def find_dep_rank_list_SG(year, dep, msc_dep_bool, degree_choice = 3):
             bad_count = 0
             student_count += 1
             name = find_name(rollno, content)
-            print 'Processing', 
-            print rollno, name
+            print('Processing', end=' ') 
+            print(rollno, name)
             # Handling duplicate names. Will label more than 2 dups in same fashion 
             try:
                 dep_dict[name]
@@ -689,10 +689,10 @@ def find_dep_rank_list_SG(year, dep, msc_dep_bool, degree_choice = 3):
                 roll_count = 31000
     # Sorting names in dict acc to SG in descending order.
     # TODO : analyze if this is stable or not. If not, make it -_-
-    sorted_dep_dict = sorted(dep_dict.items(), key=operator.itemgetter(1), reverse=True)
+    sorted_dep_dict = sorted(list(dep_dict.items()), key=operator.itemgetter(1), reverse=True)
     index = 0
     prev_rank = 1
-    print '\nDepartment Rank list for the batch ' + year + '-' + dep + ' based on recent SGPA : '
+    print('\nDepartment Rank list for the batch ' + year + '-' + dep + ' based on recent SGPA : ')
     table = PrettyTable(['Rank', 'Name', 'SG'])
     for item in sorted_dep_dict:
         if index != 0 and sorted_dep_dict[index][1] == sorted_dep_dict[index - 1][1]:
@@ -701,8 +701,8 @@ def find_dep_rank_list_SG(year, dep, msc_dep_bool, degree_choice = 3):
             table.add_row([index + 1, item[0], item[1]])
             prev_rank = index + 1
         index += 1
-    print table
-    print ''
+    print(table)
+    print('')
 
 
 def get_depth_sub_name_list(year, dep, sem_num, content = ''):
@@ -763,8 +763,8 @@ def gen_depth_sub_grade_list(year, dep, msc_dep_bool, sub_dict):
             bad_count += 1
         else :
             bad_count = 0
-            print '\nProcessing', 
-            print rollno
+            print('\nProcessing', end=' ') 
+            print(rollno)
             for sub in sub_dict:
                 str_to_find = '<td>' + sub + '</td>'
                 index = 0
@@ -778,35 +778,35 @@ def gen_depth_sub_grade_list(year, dep, msc_dep_bool, sub_dict):
                             matchObj = re.match( r'<td align="center">([X,F])<(.*)', currentLine, re.M|re.I)
                         if matchObj:
                             if matchObj.group(1) == 'E':
-                                print sub + ' EX',
+                                print(sub + ' EX', end=' ')
                                 sub_dict[sub][0] += 1
                             elif matchObj.group(1) == 'A':
-                                print sub + ' A',
+                                print(sub + ' A', end=' ')
                                 sub_dict[sub][1] += 1
                             elif matchObj.group(1) == 'B':
-                                print sub + ' B',
+                                print(sub + ' B', end=' ')
                                 sub_dict[sub][2] += 1
                             elif matchObj.group(1) == 'C':
-                                print sub + ' C',
+                                print(sub + ' C', end=' ')
                                 sub_dict[sub][3] += 1
                             elif matchObj.group(1) == 'D':
-                                print sub + ' D',
+                                print(sub + ' D', end=' ')
                                 sub_dict[sub][4] += 1
                             elif matchObj.group(1) == 'P':
-                                print sub + ' P',
+                                print(sub + ' P', end=' ')
                                 sub_dict[sub][5] += 1
                             elif matchObj.group(1) == 'F':
-                                print sub + ' F',
+                                print(sub + ' F', end=' ')
                                 sub_dict[sub][6] += 1
                             elif matchObj.group(1) == 'X':
-                                print sub + ' X',
+                                print(sub + ' X', end=' ')
                                 sub_dict[sub][7] += 1
                         break
                     index += 1
         if bad_count >= 5 and not msc_dep_bool and last5 < 30000:
             last5 = 30000
         if bad_count >= 5 and (msc_dep_bool or last5 > 30000):
-            print ''
+            print('')
             return 
 
 
@@ -830,14 +830,14 @@ def find_depth_sub_grade_list(dep, sem_num, msc_dep_bool, print_table = 'False')
         return dict_list
     # Else :
     grade_dict = dict_list[2]
-    print '\n\nPrevious year grade list of depth subjects for semester number ' + str(sem_num) + ' for the ' + dep + ' department :'
+    print('\n\nPrevious year grade list of depth subjects for semester number ' + str(sem_num) + ' for the ' + dep + ' department :')
     table = PrettyTable(['Sub Name', 'Ex', 'A', 'B', 'C', 'D', 'P', 'F', 'X'])
     table.align = 'l'
     for item in grade_dict:
         table.add_row([item.replace("&amp;", "&"), grade_dict[item][0],  grade_dict[item][1], grade_dict[item][2], grade_dict[item][3],
             grade_dict[item][4], grade_dict[item][5],  grade_dict[item][6], grade_dict[item][7]])
-    print table
-    print ''
+    print(table)
+    print('')
     return dict_list
 
 
@@ -860,14 +860,14 @@ def find_subjects_by_difficulty_level(grade_dict):
     for item in grade_dict:
         csum = find_sum(grade_dict[item])
         sum_dict[item] = csum
-    sorted_sum_dict = sorted(sum_dict.items(), key = operator.itemgetter(1), reverse = True)
-    print '\nFollowing subjects have been sorted in decreasing level of difficulty according to their previous yr. grade distribution.'
+    sorted_sum_dict = sorted(list(sum_dict.items()), key = operator.itemgetter(1), reverse = True)
+    print('\nFollowing subjects have been sorted in decreasing level of difficulty according to their previous yr. grade distribution.')
     table = PrettyTable(['Subject Name', 'Difficulty Score'])
     table.align = 'l'
     table.align['Difficulty Score'] = 'c'
     for item in sorted_sum_dict:
         table.add_row([item[0].replace("&amp;", "&"), item[1]])
-    print table
+    print(table)
 
 def get_br_el_sub_name_list_helper(year, dep, sem_num, dep_dict = {}):
     """ Function to get breadth and elective subjects taken by previous yr students of the given batch for the given sem_num
@@ -908,8 +908,8 @@ def get_br_el_sub_name_list_helper(year, dep, sem_num, dep_dict = {}):
             # Reset bad count, since it stores the CONSECUTIVE bad roll numbers encountered
             bad_count = 0
             student_count += 1
-            print 'Processing', 
-            print rollno
+            print('Processing', end=' ') 
+            print(rollno)
             get_br_el_sub_name_list(year, dep, sem_num, br_dict, el_dict, dep_dict, content)
         # If the subject is not Msc, then we make a transition to dual degree students
         if bad_count >= 5 and not msc_dep_bool and roll_count < 30000:
@@ -992,30 +992,30 @@ def get_br_and_elective_grade_list(dep, sem_num, dict_filled_bool, br_dict = {},
         combined_list = get_br_el_sub_name_list_helper(year, dep, sem_num)
     if len(combined_list[0]) > 0:
         grade_dict = combined_list[0]
-        print '\n\nPrevious year grade list of BREADTH subjects for semester number ' + str(sem_num) + ' for the ' + dep + ' department :'
+        print('\n\nPrevious year grade list of BREADTH subjects for semester number ' + str(sem_num) + ' for the ' + dep + ' department :')
         table = PrettyTable(['Sub Name', 'Ex', 'A', 'B', 'C', 'D', 'P', 'F', 'X'])
         table.align = 'l'
         for item in grade_dict:
             table.add_row([item.replace("&amp;", "&"), grade_dict[item]['EX'],  grade_dict[item]['A'], grade_dict[item]['B'], grade_dict[item]['C'],
                 grade_dict[item]['D'], grade_dict[item]['P'],  grade_dict[item]['F'], grade_dict[item]['X']])
-        print table
-        print ''
+        print(table)
+        print('')
         grade_dict.clear()
     else:
-        print '\n\nNo Breadth Subjects found for this semester.\n'
+        print('\n\nNo Breadth Subjects found for this semester.\n')
     if len(combined_list[1]) > 0:
         grade_dict = combined_list[1]
-        print '\n\nPrevious year grade list of ELECTIVE subjects for semester number ' + str(sem_num) + ' for the ' + dep + ' department :'
+        print('\n\nPrevious year grade list of ELECTIVE subjects for semester number ' + str(sem_num) + ' for the ' + dep + ' department :')
         table = PrettyTable(['Sub Name', 'Ex', 'A', 'B', 'C', 'D', 'P', 'F', 'X'])
         table.align = 'l'
         for item in grade_dict:
             table.add_row([item.replace("&amp;", "&"), grade_dict[item]['EX'],  grade_dict[item]['A'], grade_dict[item]['B'], grade_dict[item]['C'],
                 grade_dict[item]['D'], grade_dict[item]['P'],  grade_dict[item]['F'], grade_dict[item]['X']])
-        print table
-        print ''
+        print(table)
+        print('')
         grade_dict.clear()
     else:
-        print '\n\nNo Electives found for this semester.\n'
+        print('\n\nNo Electives found for this semester.\n')
     
 
 def find_sub_most_x_f(grade_dict, choice):
@@ -1036,21 +1036,21 @@ def find_sub_most_x_f(grade_dict, choice):
                 sub_list.append(item.replace("&amp;", "&"))
     if choice == 1:
         if len(sub_list) > 0:
-            print '\nDepth Subject(s) with most Deregistrations : ',
+            print('\nDepth Subject(s) with most Deregistrations : ', end=' ')
             for item in sub_list:
-                print item,
-            print '\nNumber of deregistrations : ' + str(maxim)
+                print(item, end=' ')
+            print('\nNumber of deregistrations : ' + str(maxim))
         else:
-            print '\nNo depth subjects with Deregistrations found :D'
+            print('\nNo depth subjects with Deregistrations found :D')
     elif choice == 2:
         if len(sub_list) > 0:
-            print '\nSubject(s) with most F grades : ',
+            print('\nSubject(s) with most F grades : ', end=' ')
             for item in sub_list:
-                print item,
-            print '\nNumber of F grades : ' + str(maxim)
+                print(item, end=' ')
+            print('\nNumber of F grades : ' + str(maxim))
         else:
-            print '\nNo depth subjects with F grades found :D'
-    print ''
+            print('\nNo depth subjects with F grades found :D')
+    print('')
 
 
 def find_sub_most_a_ex(grade_dict):
@@ -1063,10 +1063,10 @@ def find_sub_most_a_ex(grade_dict):
     for item in grade_dict:
         if grade_dict[item][0] + grade_dict[item][1] == maxim:
             list_sub.append(item)
-    print 'Depth Subject(s) with most A\'s + Ex\'s : ',
+    print('Depth Subject(s) with most A\'s + Ex\'s : ', end=' ')
     for item in list_sub:
-        print item,
-    print ''
+        print(item, end=' ')
+    print('')
 
 
 def individual_full_performance(user_roll_num):
@@ -1097,9 +1097,9 @@ def individual_semester_display(user_roll_num, sem_num, content = ''):
     #     content = f.readlines()
     # END EXCLUDE
     name = find_name(user_roll_num, content)
-    print ''
-    print 'Name : ' + name
-    print 'Roll Number : ' + user_roll_num
+    print('')
+    print('Name : ' + name)
+    print('Roll Number : ' + user_roll_num)
     index = 0
     sem_found = False
     table = PrettyTable(['Sub Name', 'Credits', 'Grade', 'Sub Type'])
@@ -1131,9 +1131,9 @@ def individual_semester_display(user_roll_num, sem_num, content = ''):
                     return
                 elif int(matchObj.group(1)) == sem_num:
                     sem_found = True
-                    print 'Semester No.: ' + matchObj.group(1)
+                    print('Semester No.: ' + matchObj.group(1))
         elif line.find("<td><b>Semester Credit Taken") != -1 and sem_found:
-            print table
+            print(table)
             table.clear_rows()
             sg_found = False
             for line_ in content[index:]:
@@ -1149,12 +1149,12 @@ def individual_semester_display(user_roll_num, sem_num, content = ''):
                     else:
                         break
             if sg_found:
-                print "SGPA for this semester : " + str(sg)
+                print("SGPA for this semester : " + str(sg))
             else:
-                print "No SGPA available for this semester yet."
+                print("No SGPA available for this semester yet.")
         index += 1
     # Control reaches here only if said semester is not found
-    print "No records were found for " + user_roll_num + " for the semester number : " + str(sem_num)
+    print("No records were found for " + user_roll_num + " for the semester number : " + str(sem_num))
 
 
 def take_main_choice():
@@ -1167,18 +1167,18 @@ def take_main_choice():
     # Available choices from main table
     # 5 will be used for exiting
     choices = ['1.1', '1.2', '1.3', '2.1', '2.2', '3.0', '3.1', '3.2', '3.3', '3.4', '4.1', '4.2', '5']
-    print "Enter your choice. To Exit, enter 5"
-    print "Eg. \"1.1\" (without quotes) for CGPA list"
+    print("Enter your choice. To Exit, enter 5")
+    print("Eg. \"1.1\" (without quotes) for CGPA list")
     # Taking user input for choice
-    choice = raw_input("")
+    choice = input("")
     # Checking validity of choice entered.
     while choice not in choices:
-        choice = raw_input("Please enter a valid choice :  ")
+        choice = input("Please enter a valid choice :  ")
     # Choices 1.1, 1.2, 1.3 further require a sub choice of Individual / Batch list
     if choice in ['1.1', '1.2', '1.3']:
-        sub_choice = raw_input("Select - 1) Individual         2) Batch List :  ")
+        sub_choice = input("Select - 1) Individual         2) Batch List :  ")
         while sub_choice not in ['1', '2']:
-            sub_choice = raw_input("Please enter valid sub choice again (1 or 2) :  ")
+            sub_choice = input("Please enter valid sub choice again (1 or 2) :  ")
         # If asked for an individual
         if sub_choice == '1':
             user_roll_num, content = take_roll_num()
@@ -1188,36 +1188,36 @@ def take_main_choice():
                 user_cg = find_cg_individual(user_roll_num, content)
                 # Checking that records exist for this roll num
                 if user_cg != -1:
-                    print "\nCGPA for " + name + " is : " + str(user_cg) + "\n"
+                    print("\nCGPA for " + name + " is : " + str(user_cg) + "\n")
                 else:
-                    print "\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.\n"
+                    print("\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.\n")
             # Individual SGPA list
             elif choice == '1.2':
                 sg_list = find_sg_list_individual(user_roll_num, content)
                 num_semesters = len(sg_list)
                 if num_semesters > 0:
-                    print '\nSGPA list for ' + name + ' : '
+                    print('\nSGPA list for ' + name + ' : ')
                     table = PrettyTable(['Semester Number', 'SGPA'])
                     for i in range(num_semesters, 0, -1):
                         table.add_row([i, sg_list[num_semesters - i]])
-                    print table
+                    print(table)
                 else:
-                    print "\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered."
-                print ''
+                    print("\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.")
+                print('')
             # Individual - Most recent SGPA
             elif choice == '1.3':
                 sg = find_recent_sg_individual(user_roll_num, content)
                 if sg != -1:
-                    print '\nMost recent SGPA for ' + name + ' is : ' + str(sg)
+                    print('\nMost recent SGPA for ' + name + ' is : ' + str(sg))
                 else:
-                    print "\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered."
-                print ''
+                    print("\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.")
+                print('')
         # Batch List case
         elif sub_choice == '2':
             year = take_year()
             dep = take_dep()
             msc_dep_bool = is_msc_dep(dep)
-            print '\nCrunching Data... This may take a couple of minutes or more depending on your OS and internet connection.\n'
+            print('\nCrunching Data... This may take a couple of minutes or more depending on your OS and internet connection.\n')
             # Batch List - CGPA
             if choice == '1.1':
                 find_cg_batch(year, dep, msc_dep_bool)
@@ -1230,27 +1230,27 @@ def take_main_choice():
     # BASIC LISTS ALL DONE!!!!!
 
     elif choice in ['2.1', '2.2']:
-        sub_choice = raw_input("Select 1) Individual    2) Full batch rank list :  ")
+        sub_choice = input("Select 1) Individual    2) Full batch rank list :  ")
         while sub_choice not in ['1', '2']:
-            sub_choice = raw_input("Please enter valid sub choice again (1 or 2) :  ")
+            sub_choice = input("Please enter valid sub choice again (1 or 2) :  ")
         if sub_choice == '1':
             user_roll_num, content = take_roll_num()
             name = find_name(user_roll_num, content)
-            print '\nCrunching Data... This may take a couple of minutes or more depending on your OS and internet connection.\n'
+            print('\nCrunching Data... This may take a couple of minutes or more depending on your OS and internet connection.\n')
             # Individual Dep rank based on CG
             if choice == '2.1':
                 dep_rank = find_dep_rank_individual(user_roll_num)
                 if dep_rank == -1:
-                    print "\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.\n"
+                    print("\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.\n")
                 else:
-                    print '\nDepartment Rank for ' + name + ' is ' + str(dep_rank[0]) + ' out of ' + str(dep_rank[1]) + ' students.\n'
+                    print('\nDepartment Rank for ' + name + ' is ' + str(dep_rank[0]) + ' out of ' + str(dep_rank[1]) + ' students.\n')
             # Individual Dep rank based on recent SGPA
             elif choice == '2.2':
                 dep_rank, student_count = find_dep_rank_individual(user_roll_num, '2')
                 if dep_rank == -1:
-                    print "\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.\n"
+                    print("\nRecords don't exist for " + user_roll_num + ". Please check the validity of the roll number you have entered.\n")
                 else:
-                    print '\nDepartment Rank for ' + name + ' on basis of most recent SGPA is ' + str(dep_rank) + ' out of ' + str(student_count) + ' students.\n'
+                    print('\nDepartment Rank for ' + name + ' on basis of most recent SGPA is ' + str(dep_rank) + ' out of ' + str(student_count) + ' students.\n')
         elif sub_choice == '2':
             year = take_year()
             dep = take_dep()
@@ -1259,7 +1259,7 @@ def take_main_choice():
                 degree_choice = take_degree()
             else:
                 degree_choice = 3
-            print '\nCrunching Data... This may take a couple of minutes or more depending on your OS and internet connection.\n'
+            print('\nCrunching Data... This may take a couple of minutes or more depending on your OS and internet connection.\n')
             if choice == '2.1':
                 find_dep_rank_list_CG(year, dep, msc_dep_bool, degree_choice)
             elif choice == '2.2':
@@ -1268,14 +1268,14 @@ def take_main_choice():
         user_roll_num, content = take_roll_num() 
         if choice == '4.1':
             individual_full_performance(user_roll_num)
-            print '\nThe result should have opened in your default web browser.\n'
+            print('\nThe result should have opened in your default web browser.\n')
         elif choice == '4.2':
             sem_num = take_sem_num()
             individual_semester_display(user_roll_num, sem_num, content)
     elif choice in ['3.0','3.1', '3.2', '3.3', '3.4']:
         dep = take_dep()
         sem_num = take_sem_num()
-        print '\nCrunching Data... This may take couple of minutes or more depending on your OS and internet connection.\n'
+        print('\nCrunching Data... This may take couple of minutes or more depending on your OS and internet connection.\n')
         if choice == '3.1':
             find_depth_sub_grade_list(dep, sem_num, is_msc_dep(dep), True)
         elif choice == '3.2':
@@ -1303,31 +1303,31 @@ def take_main_choice():
             find_sub_most_a_ex(grade_dict)
             
     elif choice == '5':
-        print 'Exiting...'
+        print('Exiting...')
         exit(0)
-    return_choice = raw_input('\nReturn to main menu : \'r\' or Exit : \'e\' ? :  ')
+    return_choice = input('\nReturn to main menu : \'r\' or Exit : \'e\' ? :  ')
     while return_choice not in ['r', 'e']:
-        return_choice = raw_input('Please enter valid choice (r, e) :  ')
+        return_choice = input('Please enter valid choice (r, e) :  ')
     if return_choice == 'r':
         return True
     elif return_choice == 'e':
         return False
 
 if __name__ == "__main__":
-    print "\n********** Welcome to CG Accumulator **********\n"
-    print "Developed by - Avikalp Srivastava"
-    print "To contribute, visit https://github.com/Avikalp7/CG-Accumulator"
+    print("\n********** Welcome to CG Accumulator **********\n")
+    print("Developed by - Avikalp Srivastava")
+    print("To contribute, visit https://github.com/Avikalp7/CG-Accumulator")
     # CONDITION TO CHECK FOR RESULTS AVAILABILITY WILL BE PLACED HERE
     # FOLLOWING BLOCK WILL BE PLACED AFTER PRINTING "***** Welcome to CG Accumulator *****"
-    print "\nEstablishing Connection ........"
+    print("\nEstablishing Connection ........")
     # connecting to a page containing info about latest version
     # content = connect("Output.txt", 'http://cgaccumulator.blog.com/')
     # Checking availability of results.
     if not check_results_availability():
-        print "\nSorry. Right now the results are not available due to ongoing upadations in the institute database."  
-        key = raw_input("Press Enter to Exit.")
+        print("\nSorry. Right now the results are not available due to ongoing upadations in the institute database.")  
+        key = input("Press Enter to Exit.")
         exit(0)
-    print '\nConnected!'
+    print('\nConnected!')
     # Checking for latest version
     # check_for_update(content)  
     # Bool var storing user's choice to return to / display main menu.
@@ -1335,13 +1335,13 @@ if __name__ == "__main__":
     main_menu_status = True
     while main_menu_status:
         # Main Menu content
-        print '\n*** Main Menu ***'
+        print('\n*** Main Menu ***')
         table = PrettyTable(['Basic Lists / Info', 'Department Rank' , '3.0 Semester Summariser', 'Individual Grade Summariser'])
         table.add_row(['1.1 CGPA','2.1 Based on CG', '3.1 Depth Subjects Grade List (Prev Yr.)', '4.1 Full Performance'])
         table.add_row(['1.2 SGPA', '2.2 Based on recent SG','3.2 Breadth & Elective Subjects Grade List (Prev yr.)','4.2 Particular Semester'])
         table.add_row(['1.3 Most Recent SGPA','', '3.3 Depth Subjects by Difficulty Level', ''])
         table.add_row(['','', '3.4 Depth Subject with most F and Deregistrations', ''])
         table.align = 'l'
-        print table
+        print(table)
         main_menu_status = take_main_choice()
     exit(0)
